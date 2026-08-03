@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Shafira Mustika Harda Saputri</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #020111 0%, #20124d 100%);
+            color: #e0e7ff; 
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden; 
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .font-cursive {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        #starfield {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .moon {
+            position: absolute;
+            top: 10%;
+            right: 15%;
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #fff, inset -10px -10px 20px rgba(0,0,0,0.1);
+            z-index: 1;
+            opacity: 0.8;
+            animation: pulseMoon 5s infinite alternate;
+        }
+
+        @keyframes pulseMoon {
+            0% { box-shadow: 0 0 30px #fff, inset -10px -10px 20px rgba(0,0,0,0.1); opacity: 0.7; }
+            100% { box-shadow: 0 0 60px #fff, 0 0 100px #e0e7ff, inset -10px -10px 20px rgba(0,0,0,0.1); opacity: 1; }
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
+            z-index: 10;
+            padding: 2rem;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(224, 231, 255, 0.5);
+        }
+
+        .btn-nav {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            font-family: 'Quicksand', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 20;
+        }
+
+        .btn-nav:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255,255,255,0.5);
+        }
+        
+        .content-box {
+            background: rgba(10, 20, 50, 0.4);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            padding: 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 15;
+        }
+
+        /* Spotify Player Float */
+        .spotify-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 50;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-radius: 12px;
+        }
+        .spotify-container:hover {
+            transform: scale(1.02);
+        }
+
+        #envelope-screen {
+            perspective: 1000px;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 290px;
+            height: 190px;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #1e1b4b;
+            border: 1px solid rgba(129, 140, 248, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 30px rgba(99, 102, 241, 0.25);
+            transition: transform 0.4s ease;
+        }
+
+        .envelope-wrapper:not(.open):hover .envelope {
+            transform: translateY(-6px) scale(1.02);
+        }
+
+        .envelope .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 145px solid transparent;
+            border-right: 145px solid transparent;
+            border-top: 105px solid #312e81;
+            transform-origin: top;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1) 0.2s, z-index 0.2s ease;
+            z-index: 5;
+        }
+
+        .envelope .pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 145px solid #1e1b4b;
+            border-right: 145px solid #1e1b4b;
+            border-bottom: 105px solid #0f172a;
+            border-radius: 0 0 12px 12px;
+            z-index: 4;
+        }
+
+        .envelope .letter {
+            position: absolute;
+            bottom: 12px;
+            left: 15px;
+            width: 260px;
+            height: 160px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 8px;
+            padding: 16px;
+            box-sizing: border-box;
+            transition: transform 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .envelope .wax-seal {
+            position: absolute;
+            top: 85px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48px;
+            height: 48px;
+            background: radial-gradient(circle, #f43f5e 0%, #be123c 100%);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 6;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.5);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .envelope-wrapper.open .envelope .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .envelope .wax-seal {
+            transform: translateX(-50%) scale(0);
+            opacity: 0;
+        }
+
+        .envelope-wrapper.open .envelope .letter {
+            transform: translateY(-110px);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="envelope-screen" class="fixed inset-0 z-50 flex flex-col justify-center items-center backdrop-blur-md bg-[#020111]/90 transition-all duration-1000">
+        <p class="text-blue-200 text-xl md:text-2xl font-light mb-10 animate-pulse text-glow tracking-wide text-center px-4">
+            Ada sebuah surat khusus untukmu... ✨
+        </p>
+        
+        <div class="envelope-wrapper cursor-pointer" id="envelope-wrap" onclick="openEnvelope()">
+            <div class="envelope">
+                <div class="flap"></div>
+                <div class="pocket"></div>
+                <div class="letter">
+                    <p class="font-cursive text-2xl text-slate-800 font-bold mb-1">Untuk Shafira ❤️</p>
+                    <p class="text-xs text-slate-500 font-medium">Dari Kaza yang tersayang</p>
+                </div>
+                <div class="wax-seal">
+                    <span class="text-2xl">❤️</span>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-sm text-blue-300/80 mt-10 tracking-widest uppercase font-light animate-bounce">
+            Tekan Amplop Untuk Membuka
+        </p>
+    </div>
+
+    <canvas id="starfield"></canvas>
+    <div class="moon"></div>
+
+    <div class="spotify-container">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5xYpEeGFXmkGMBQ22NfKfO?utm_source=generator&theme=0" width="300" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+
+    <!-- Slide 1: Pembukaan -->
+    <div class="slide active" id="slide-0">
+        <div class="content-box">
+            <h1 class="text-5xl md:text-7xl font-cursive mb-6 text-blue-200 text-glow">Teruntuk Shafira...</h1>
+            <p class="text-xl md:text-2xl font-light leading-relaxed mb-8">
+                Shafira Mustika Harda Saputri,<br>
+                perempuan kesayanganku.
+            </p>
+            <p class="text-lg md:text-xl font-light text-blue-100 mb-8">Ada beberapa hal yang ingin Kaza sampaikan.</p>
+            <button class="btn-nav" onclick="nextSlide(1)">Baca Pesan</button>
+        </div>
+    </div>
+
+    <!-- Slide 2: Rindu & Menanyakan Kabar -->
+    <div class="slide" id="slide-1">
+        <div class="content-box">
+            <p class="text-lg md:text-xl font-light leading-relaxed mb-6">
+                Halo perempuan kesayanganku, di sini Kaza mau memberikan sedikit pesan yaa...<br><br>
+                Karena udah lama banget kita gak ngobrol yang beneran ngobrol, dan udah lama juga gak ketemu buat yang sekadar jalan atau main gitu kan. Kaza ngerasa dari segi komunikasi kita emang agak kurang belakangan ini, apalagi sekarang udah jarang banget teleponan.
+            </p>
+            <p class="text-xl md:text-2xl font-cursive text-blue-200 mb-8 text-glow">
+                "Jadi pertama-tama Kaza mau tanya dulu ke kamu, sayang... kamu baik-baik aja kan setelah semua yang udah terjadi?"
+            </p>
+            <p class="text-lg md:text-xl font-light leading-relaxed mb-8">
+                Gimana kabar kamu hari ini, gimana hari-hari yang udah kamu lewati, dan gimana perasaan kamu ke Kaza sekarang?
+            </p>
+            <button class="btn-nav" onclick="nextSlide(2)">Lanjut</button>
+        </div>
+    </div>
+
+    <!-- Slide 3: Permintaan Maaf -->
+    <div class="slide" id="slide-2">
+        <div class="content-box">
+            <h2 class="text-3xl md:text-4xl font-cursive mb-6 text-blue-200 text-glow">Maafkan Kaza ya...</h2>
+            <p class="text-lg md:text-xl font-light leading-relaxed mb-8">
+                Kaza mau minta maaf yaa kalau komunikasi dari Kaza masih banyak kurangnya, dan sering bikin mati topik juga kalau lagi ngobrol sama kamu.<br><br>
+                Maaf yaa kalau Kaza terkesan membosankan atau beberapa kali sempet bikin kamu marah dan kesal. Kaza bener-bener minta maaf atas hal itu, dan Kaza bakal terus usahain buat jadi yang lebih baik lagi buat kamu.
+            </p>
+            <button class="btn-nav" onclick="nextSlide(3)">Lanjut</button>
+        </div>
+    </div>
+
+    <!-- Slide 4: Terima Kasih & Harapan Kedepan -->
+    <div class="slide" id="slide-3">
+        <div class="content-box">
+            <h2 class="text-3xl md:text-4xl font-cursive mb-6 text-blue-200 text-glow">Terima Kasih, Sayang</h2>
+            <p class="text-lg md:text-xl font-light leading-relaxed mb-6">
+                Selain itu, Kaza mau ngucapin terima kasih yang sebesar-besarnya sama kamu. Meskipun komunikasi kita lagi agak renggang, kamu masih mau bales chat dan masih selalu ngabarin Kaza. Terima kasih banyak yaa sayang buat hal itu, Kaza hargai banget.<br><br>
+                Setelah ini mungkin kita berdua bakal sama-sama sibuk lagi... tapi tenang aja, Kaza bakal selalu punya waktu kok buat kamu. Cuma yaa mungkin bakal ada momen di mana kita agak susah buat ketemu atau komunikasi intens.
+            </p>
+            <p class="text-lg md:text-xl font-medium text-blue-100 mb-8 italic">
+                "Tapi apa pun yang terjadi nanti, Kaza berharap kamu masih tetap mau sama Kaza dan masih pengen nemenin Kaza."
+            </p>
+            <button class="btn-nav" onclick="nextSlide(4)">Lanjut</button>
+        </div>
+    </div>
+
+    <!-- Slide 5: Kaza Selalu Ada -->
+    <div class="slide" id="slide-4">
+        <div class="content-box">
+            <p class="text-lg md:text-xl font-light leading-relaxed mb-6">
+                Kaza juga berharap bisa selalu ada buat nemenin, bantuin, dan jagain kamu kapan pun kamu butuh. Intinya, semoga hubungan kita bisa terus jalan bareng-bareng yaa.<br><br>
+                Kaza jujur takut banget kalau hal ini gak diomongin, nanti komunikasi kita malah makin berkurang. Makanya Kaza memberanikan diri buat luapin semuanya di sini. Kamu gak harus jawab pakai teks panjang juga kok, sayang... kamu bisa jawab nanti pas kita teleponan atau di lain waktu.
+            </p>
+            <p class="text-xl md:text-2xl font-cursive text-blue-200 mb-8 text-glow">
+                "Tapi yang pasti, Kaza mau kamu tahu kalau Kaza selalu ada di sini, Kaza gak kemana-mana, dan Kaza bakal selalu nungguin kamu."
+            </p>
+            <button class="btn-nav" onclick="nextSlide(5)">Lanjut</button>
+        </div>
+    </div>
+
+    <!-- Slide 6: Penutup & Pertanyaan -->
+    <div class="slide" id="slide-5">
+        <div class="content-box">
+            <h2 class="text-4xl md:text-5xl font-cursive mb-6 text-blue-200 text-glow">I Love You, Shafira</h2>
+            <p class="text-lg md:text-xl font-light leading-relaxed mb-8">
+                Maaf yaa sayang kalau Kaza terkesan sedikit berlebihan...<br><br>
+                Kaza cuma masih takut banget kamu pergi. Kaza bener-bener berharap kamu tetap ada di sini bareng Kaza. Kaza pengen kita bisa terus bareng-bareng sampai kapan pun.
+            </p>
+            
+            <p class="text-xl md:text-2xl font-semibold text-blue-100 mb-6 mt-4">Jadi, mau kan kamu terus nemenin Kaza?</p>
+            
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6 min-h-[60px] relative">
+                <button class="btn-nav bg-blue-600/30 hover:bg-blue-500/50" onclick="sayYes()">Ya, mau ❤️</button>
+                <button class="btn-nav bg-red-600/30 hover:bg-red-500/50" id="btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">Gak mau</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Yeey! (Setelah klik Ya) -->
+    <div class="slide" id="slide-6">
+        <div class="content-box" style="background: rgba(255, 100, 150, 0.2); border-color: rgba(255, 180, 200, 0.4);">
+            <h2 class="text-5xl md:text-7xl font-cursive mb-6 text-pink-300 text-glow">Yeeeyyy!!! 🎉</h2>
+            <p class="text-xl md:text-2xl font-light leading-relaxed mb-6">
+                Terima kasih banyak yaa sayangku... ❤️<br><br>
+                Kaza seneng bangetttt! Kaza janji bakal selalu berusaha bahagiain kamu dan terus ada buat kamu.
+            </p>
+            <p class="text-2xl font-cursive text-pink-200 mt-8 text-glow">I love you more than words can say.</p>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let isHappy = false;
+
+        function openEnvelope() {
+            const envelopeWrap = document.getElementById('envelope-wrap');
+            const envelopeScreen = document.getElementById('envelope-screen');
+            
+            if (envelopeWrap.classList.contains('open')) return;
+            
+            envelopeWrap.classList.add('open');
+            
+            if (typeof createHeartExplosion === 'function') {
+                setTimeout(() => createHeartExplosion(), 600);
+            }
+            
+            setTimeout(() => {
+                envelopeScreen.style.opacity = '0';
+                envelopeScreen.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    envelopeScreen.style.display = 'none';
+                }, 1000);
+            }, 1800);
+        }
+
+        function nextSlide(index) {
+            document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+            currentSlide = index;
+            document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        }
+
+        function sayYes() {
+            nextSlide(6);
+            isHappy = true;
+            createHeartExplosion();
+        }
+
+        function moveNoButton() {
+            const btn = document.getElementById('btn-no');
+            
+            const maxX = window.innerWidth - btn.offsetWidth - 20;
+            const maxY = window.innerHeight - btn.offsetHeight - 20;
+            
+            const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+            
+            btn.style.position = 'fixed';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let stars = [];
+        let shootingStars = [];
+        let hearts = [];
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.5;
+                this.blinkSpeed = Math.random() * 0.05 + 0.01;
+                this.alpha = Math.random();
+                this.alphaChange = this.blinkSpeed;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.fill();
+            }
+
+            update() {
+                this.alpha += this.alphaChange;
+                if (this.alpha <= 0 || this.alpha >= 1) {
+                    this.alphaChange = -this.alphaChange;
+                }
+            }
+        }
+
+        class ShootingStar {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = 0;
+                this.len = (Math.random() * 80) + 20;
+                this.speed = (Math.random() * 10) + 5;
+                this.size = (Math.random() * 1) + 0.5;
+                this.waitTime = new Date().getTime() + (Math.random() * 3000) + 500;
+                this.active = false;
+            }
+
+            update() {
+                if (this.active) {
+                    this.x -= this.speed;
+                    this.y += this.speed;
+                    
+                    if (this.x < 0 || this.y > height) {
+                        this.reset();
+                    }
+                } else {
+                    if (this.waitTime < new Date().getTime()) {
+                        this.active = true;
+                    }
+                }
+            }
+
+            draw() {
+                if (this.active) {
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(this.x + this.len, this.y - this.len);
+                    ctx.lineWidth = this.size;
+                    
+                    let gradient = ctx.createLinearGradient(this.x, this.y, this.x + this.len, this.y - this.len);
+                    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    
+                    ctx.strokeStyle = gradient;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        class HeartParticle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 15 + 10;
+                this.speedX = (Math.random() - 0.5) * 15;
+                this.speedY = (Math.random() - 1) * 15;
+                this.gravity = 0.2;
+                this.color = `hsla(${Math.random() * 30 + 330}, 100%, 70%, ${Math.random() * 0.5 + 0.5})`;
+                this.life = 200;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 5;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.speedY += this.gravity;
+                this.y += this.speedY;
+                this.rotation += this.rotationSpeed;
+                this.life--;
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.rotation * Math.PI / 180);
+                ctx.scale(this.size / 20, this.size / 20); 
+                
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.moveTo(0, 5);
+                ctx.bezierCurveTo(-10, -10, -20, 10, 0, 25);
+                ctx.bezierCurveTo(20, 10, 10, -10, 0, 5);
+                ctx.fill();
+                
+                ctx.restore();
+            }
+        }
+
+        function createHeartExplosion() {
+            for(let i = 0; i < 150; i++) {
+                hearts.push(new HeartParticle(width / 2, height - 100));
+            }
+        }
+
+        function initStars() {
+            stars = [];
+            shootingStars = [];
+            hearts = [];
+            const numStars = Math.floor((width * height) / 2000);
+            for (let i = 0; i < numStars; i++) {
+                stars.push(new Star());
+            }
+            for (let i = 0; i < 3; i++) {
+                shootingStars.push(new ShootingStar());
+            }
+        }
+
+        function animate() {
+            ctx.fillStyle = 'rgba(2, 1, 17, 0.2)';
+            ctx.fillRect(0, 0, width, height);
+
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            shootingStars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+
+            for(let i = hearts.length - 1; i >= 0; i--) {
+                hearts[i].update();
+                hearts[i].draw();
+                if(hearts[i].life <= 0 || hearts[i].y > height + 50) {
+                    hearts.splice(i, 1);
+                }
+            }
+
+            if (isHappy) {
+                if (Math.random() < 0.15) {
+                    hearts.push(new HeartParticle(Math.random() * width, -20));
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            initCanvas();
+            initStars();
+            if(isHappy) createHeartExplosion();
+        });
+
+        window.onload = () => {
+            initCanvas();
+            initStars();
+            animate();
+        };
+    </script>
+</body>
+</html>
